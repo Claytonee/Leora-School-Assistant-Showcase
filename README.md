@@ -1,4 +1,4 @@
-<img src="./assets/leora-banner.svg" alt="Leora School Assistant — multi-tenant school-management SaaS"/>
+<img src="https://cdn.jsdelivr.net/gh/Claytonee/Leora-School-Assistant-Showcase@main/assets/leora-banner.svg" alt="Leora School Assistant — multi-tenant school-management SaaS"/>
 
 # Leora School Assistant — Technical Showcase
 
@@ -43,36 +43,38 @@ One platform, many schools. Each school is an isolated tenant with its own staff
 
 ```mermaid
 %%{init: { "theme": "base", "themeVariables": { "primaryColor": "#00085B", "primaryTextColor": "#EAF7F3", "primaryBorderColor": "#0E4DFF", "lineColor": "#17D9F9", "secondaryColor": "#0127BC", "tertiaryColor": "#00072D", "clusterBkg": "#00072D", "edgeLabelBackground": "#00072D", "fontSize": "13px" } }}%%
-flowchart LR
-    subgraph Client
-        B[Browser · mobile & desktop]
+flowchart TB
+    B["Browser — mobile and desktop"]
+    subgraph APP["Next.js 16 App Router · Turbopack"]
+        RSC["Server Components"]
+        P["Portals — owner · admin · teacher · student"]
+        API["REST route handlers · tenant guard · RBAC"]
     end
-    subgraph App["Next.js 16 App Router (Turbopack)"]
-        RSC[Server Components]
-        P[Portals: owner · admin · teacher · student]
-        API[REST route handlers + guards]
+    subgraph DATA["Data"]
+        PR["Prisma ORM · 252 models"]
+        PG[("PostgreSQL")]
     end
-    subgraph Data
-        PG[(PostgreSQL)]
-        PR[Prisma ORM · 252 models]
+    subgraph SVC["Services"]
+        CK["Clerk authentication"]
+        AI["AI layer — Groq → Anthropic → OpenAI failover"]
+        CDN["Cloudinary CDN"]
     end
-    subgraph Services
-        C[Clerk authentication]
-        AI[AI layer — Groq / Anthropic / OpenAI failover]
-        CDN[Cloudinary CDN]
-    end
-    B --> RSC --> P
-    B --> API
-    API --> PR --> PG
+    B --> RSC
+    RSC --> P
     P --> API
+    B --> API
+    API --> PR
+    PR --> PG
     API --> AI
     API --> CDN
-    C -. session .-> B
+    CK -. session .-> B
     classDef svc fill:#0127BC,stroke:#17D9F9,color:#EAF7F3,stroke-width:1.5px;
-    class C,AI,CDN svc;
+    class CK,AI,CDN svc;
 ```
 
 **Multi-tenancy** — every query is tenant-scoped at the data-access layer; cross-tenant reads are structurally guarded, not conventionally avoided. Role-based access control separates platform administration from school administration from staff from students, with supplemental roles (class teacher, teacher-on-duty) that activate contextually.
+
+<img src="https://cdn.jsdelivr.net/gh/Claytonee/Leora-School-Assistant-Showcase@main/assets/tenant-isolation.svg" alt="Tenant isolation: one codebase and one database serving separated schools, with cross-tenant reads blocked at the data-access layer" width="100%"/>
 
 **Engineering rules the codebase enforces** — additive-only schema evolution (no destructive migrations, soft deletes only), every API response validated before rendering, secrets never committed, and CI gates that run type-checking and tests before any merge. Screens, dropdowns and layout follow one internal design system so 390+ pages stay consistent.
 
@@ -99,4 +101,4 @@ It is designed for the environment it serves: Swahili + English, TZS finance, NE
 
 No license is granted for the artwork, animated banners, diagrams or text in this repository. Copying, modification, redistribution and derivative works are prohibited without written permission. Reach me at **claytonecurth@gmail.com** for licensing or walkthroughs.
 
-<img src="./assets/leora-footer.svg" alt=""/>
+<img src="https://cdn.jsdelivr.net/gh/Claytonee/Leora-School-Assistant-Showcase@main/assets/leora-footer.svg" alt=""/>

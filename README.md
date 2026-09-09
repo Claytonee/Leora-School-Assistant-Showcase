@@ -36,39 +36,25 @@ One platform, many schools. Each school is an isolated tenant with its own staff
 | 💳 **Finance & billing** | Fee structures, invoices, payments and bursar workflows, plus hotspot/billing integration for school networks |
 | 📣 **Communication** | Parent communication, announcements and notification workflows |
 | 🧑‍💼 **Portals** | Distinct role experiences: owner, headmaster/admin, academic master, exams officer, HOD, bursar, HR, class teacher, teacher, and student portal |
-| 🤖 **AI insights** | Per-module AI insight cards (multi-provider failover: Groq → Anthropic → OpenAI) for summaries and anomaly flags |
+| 🤖 **AI insights** | Per-module AI insight cards (provider failover: Anthropic → OpenAI) for summaries and anomaly flags |
 | 🎨 **Branding & identity** | Per-tenant school branding with role-aware badge tiers and verified identity |
 
 ## Architecture
 
 ```mermaid
 %%{init: { "theme": "base", "themeVariables": { "primaryColor": "#00085B", "primaryTextColor": "#EAF7F3", "primaryBorderColor": "#0E4DFF", "lineColor": "#17D9F9", "secondaryColor": "#0127BC", "tertiaryColor": "#00072D", "clusterBkg": "#00072D", "edgeLabelBackground": "#00072D", "fontSize": "13px" } }}%%
-flowchart TB
-    B["Browser — mobile and desktop"]
-    subgraph APP["Next.js 16 App Router · Turbopack"]
-        RSC["Server Components"]
-        P["Portals — owner · admin · teacher · student"]
-        API["REST route handlers · tenant guard · RBAC"]
-    end
-    subgraph DATA["Data"]
-        PR["Prisma ORM · 252 models"]
-        PG[("PostgreSQL")]
-    end
-    subgraph SVC["Services"]
-        CK["Clerk authentication"]
-        AI["AI layer — Groq → Anthropic → OpenAI failover"]
-        CDN["Cloudinary CDN"]
-    end
-    B --> RSC
-    RSC --> P
-    P --> API
+flowchart LR
+    B["Browser"] --> P["Portals + Server Components<br/>owner · admin · teacher · student"] --> API["REST route handlers<br/>tenant guard · RBAC"]
     B --> API
-    API --> PR
-    PR --> PG
-    API --> AI
-    API --> CDN
-    CK -. session .-> B
+    API --> PR[("PostgreSQL + Prisma<br/>252 models")]
+    API --> AI["AI failover<br/>Anthropic → OpenAI"]
+    API --> CDN["Cloudinary CDN"]
+    CK["Clerk"] -. session .-> B
+    classDef app fill:#00085B,stroke:#0E4DFF,color:#EAF7F3,stroke-width:1.5px;
+    classDef data fill:#00072D,stroke:#17D9F9,color:#EAF7F3,stroke-width:1.5px;
     classDef svc fill:#0127BC,stroke:#17D9F9,color:#EAF7F3,stroke-width:1.5px;
+    class P,API app;
+    class PR data;
     class CK,AI,CDN svc;
 ```
 
@@ -86,7 +72,7 @@ flowchart TB
 | UI | Tailwind CSS 4, shadcn/ui (Base UI primitives), Recharts, Liquid Glass dashboard system |
 | Database | PostgreSQL + Prisma ORM (252 models, additive-only migrations, audit logging) |
 | Auth | Clerk |
-| AI | Groq (llama-3.3-70b) → Anthropic → OpenAI provider failover |
+| AI | Anthropic → OpenAI provider failover |
 | Infra | Vercel / Render, Cloudinary CDN, GitHub CI checks |
 
 ## Why this project matters

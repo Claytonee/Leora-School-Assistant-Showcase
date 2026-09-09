@@ -64,7 +64,7 @@
 </g>
 <circle r="4.2" fill="#F20002" opacity="0"><animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" path="M268,190 L400,190 L268,190" keyPoints="0;0;0.5;1;1" keyTimes="0;0.600;0.733;0.833;1"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.600;0.607;0.833;0.840;1" dur="6s" repeatCount="indefinite"/></circle>
 
-<text x="600" y="288" font-size="13" fill="#9DB4E8">100+ schools on one codebase and one database <tspan fill="#5F79C0">Designed to hold 100+ schools on one codebase and one database <tspan fill="#5F79C0">&#183; no shared rows, no cross-tenant reads</tspan>#183; no shared rows between them</tspan></text>
+<text x="600" y="288" font-size="13" fill="#9DB4E8">100+ schools on one codebase and one database <tspan fill="#5F79C0">&#183; no shared rows between them</tspan></text>
 </g>
 <metadata><rights>Copyright 2026 Claytone Curthberth Mhina - Leora Tech Solutions. All rights reserved. No license granted; copying, modification or redistribution prohibited without written permission.</rights></metadata>
 </svg>
